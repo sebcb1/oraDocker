@@ -1,0 +1,14 @@
+version: "2"
+ 
+services:
+
+  oraSeb:
+    container_name: oraSeb
+    hostname: serverdb
+    image: sebcb1/oracle19:0.0.1
+    ports:
+      - "9001:9001"
+      - "1521:1521"
+    volumes:
+      - /root/oraTEST/data:/data
+      - /root/oraTEST/oratab:/etc/oratab
