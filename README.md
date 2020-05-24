@@ -81,6 +81,10 @@ SCALE=800M
 To prepare data:
 ```
 cd /opt/SLOB
+sqlplus / as sysdba
+@/opt/SLOB/misc/ts.sql
+exit
+
 ./setup.sh IOPS 8
 ```
 

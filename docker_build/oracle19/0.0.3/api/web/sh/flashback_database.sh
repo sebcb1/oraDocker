@@ -10,12 +10,12 @@ sqlplus / as sysdba 2>&1 >$LOG_FILE <<EOF
 	WHENEVER SQLERROR EXIT SQL.SQLCODE
 	shutdown immediate
 	startup mount pfile=/data/pfile$ORACLE_SID.ora
-	flashback database to INIT;
+	flashback database to restore point INIT;
 	alter database open resetlogs;
 EOF
 
 if [ $? -eq 0 ]; then
-	echo "Restore point INIT created"
+	echo "Database flashed back to restore point INIT"
 else
 	errormsg=$(cat $LOG_FILE |grep ORA- |head -1 | sed s/^.*ORA-/ORA-/)
 	echo $errormsg

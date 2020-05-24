@@ -80,4 +80,14 @@ sid_list_listener=
 EOF
 
 cd /opt/SLOB
+
+sqlplus / as sysdba <<EOF
+startup pfile=$DIR_BASE/pfile$ORACLE_SID.ora
+@/opt/SLOB/misc/ts.sql
+EOF
+
 ./setup.sh IOPS 8
+
+sqlplus / as sysdba <<EOF
+shutdown immediate
+EOF
