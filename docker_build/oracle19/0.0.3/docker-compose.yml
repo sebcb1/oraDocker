@@ -5,7 +5,7 @@ services:
   ora:
     container_name: ora
     hostname: serverdb
-    image: sebcb1/oracle19:0.0.3
+    image: sebcb1/oracle19:0.0.2
     ports:
       - "9001:9001"
       - "1521:1521"
