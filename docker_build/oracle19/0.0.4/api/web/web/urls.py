@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from web.views import db_startup, db_shutdown, create_restorepoint, flashback_database, run_benchmark, start_replay
+from web.views import db_startup, db_shutdown, create_restorepoint, flashback_database, run_benchmark, start_replay, status_replay, metrics_replay
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -25,4 +25,6 @@ urlpatterns = [
     path('database/flashbackdatabase', flashback_database),
     path('database/runbenchmark', run_benchmark),
     path('database/startreplay', start_replay),
+    path('database/statusreplay/<int:id>', status_replay),
+    path('database/metricsreplay/<int:id>', metrics_replay),
 ]

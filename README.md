@@ -38,42 +38,46 @@ docker-compose start ora
 
 Start the dababase: 
 ```
-curl -X PATCH  -d "{}" -H "Content-Type: application/json" http://192.168.33.30:8080/database/startup
+curl -X PATCH -H "Content-Type: application/json" http://192.168.33.30:8080/database/startup
+{"returncode": 0, "status": "FINISHED", "msg": "Database TEST started\n", "errormsg": ""}
 ```
 
 Stop the dababase: 
 ```
-curl -X PATCH  -d "{}" -H "Content-Type: application/json" http://192.168.33.30:8080/database/shutdown
+curl -X PATCH -H "Content-Type: application/json" http://192.168.33.30:8080/database/shutdown
+{"returncode": 0, "status": "FINISHED", "msg": "Database TEST shuted down\n", "errormsg": ""}
 ```
 
 Flashback the dababase: 
 ```
-curl -X PATCH  -d "{}" -H "Content-Type: application/json" http://192.168.33.30:8080/database/flashbackdatabase
+curl -X PATCH -H "Content-Type: application/json" http://192.168.33.30:8080/database/flashbackdatabase
+{"returncode": 0, "status": "FINISHED", "msg": "Database flashed back to restore point INIT\n", "errormsg": ""}
 ```
 
 Launch replay:
 ```
 curl -X PATCH  -d '{"name": "BENCHMARK"}' -H "Content-Type: application/json" http://192.168.33.30:8080/database/startreplay
+{"returncode": 0, "status": "RUNNING", "id": 1, "msg": "", "errormsg": ""}
 ```
 
 Check status of replay:
 ```
-curl -X PATCH  -d "{'id': 3}" -H "Content-Type: application/json" http://192.168.33.30:8080/database/statusreplay
+curl -X GET -H "Content-Type: application/json" http://192.168.33.30:8080/database/statusreplay/1
+{"returncode": 0, "status": "FINISHED", "replay_status": "IN PROGRESS", "id": 1}
 ```
 
 Get metrics from replay:
 ```
-curl -X GET  -d "{'id': 3}" -H "Content-Type: application/json" http://192.168.33.30:8080/database/metricsreplay
+curl -X GET  -H "Content-Type: application/json" http://192.168.33.30:8080/database/metricsreplay/1
+{"returncode": 1, "errormsg": "Replay not completed", "msg": "", "status": "FAILED"}
 ```
 
 
 ### Delete a database
 
 ```
-cd /docker/oracle/TEST
-echo "" > oratab
-cd /docker/oracle/TEST/data
-rm -rf *
+echo "" > /docker/oracle/TEST/oratab
+rm -rf /docker/oracle/TEST/data/*
 ```
 
 ### Manage supervisor
@@ -209,7 +213,7 @@ Version 0.0.3 - 24/05/2020
 - Databse is created in archivelog mode
 - db_recovery_file_dest_size and db_recovery_file_dest are used
 
-Version 0.0.4 - 30/05/2020
+Version 0.0.4 - 31/05/2020
 - Update run_benchmark.sh with correct log file name and return message
 - Add the capture of benchamrk with RAT when the database is created with its restore point INIT
 - Add api:
@@ -217,6 +221,7 @@ Version 0.0.4 - 30/05/2020
 	- database/statusreplay
 	- /database/metricsreplay
 - Add script to start API server with oracle env
+- Improve API erros
 
 ## Some links
 
