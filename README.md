@@ -4,15 +4,15 @@ Oracle Docker image for OraTune project.
 
 ## Build an image
 
-Download LINUX.X64_193000_db_home.zip from Oracle website into ./docker_build/oracle19/0.0.7
+Download LINUX.X64_193000_db_home.zip from Oracle website into ./docker_build/oracle19/0.0.5
 
 ```
-docker build -t sebcb1/oracle19:0.0.4 ./docker_build/oracle19/0.0.4
+docker build -t sebcb1/oracle19:0.0.5 ./docker_build/oracle19/0.0.5
 ```
 
 You can export your image:
 ```
-docker save -o oracle19_0.0.4.tar sebcb1/oracle19
+docker save -o oracle19_0.0.5.tar sebcb1/oracle19
 ```
 
 ## Manage a database
@@ -23,7 +23,7 @@ docker save -o oracle19_0.0.4.tar sebcb1/oracle19
 mkdir -p /docker/oracle/TEST/data
 touch /docker/oracle/TEST/oratab
 chown -R 54321:54321  /docker/oracle/TEST
-docker run -v /docker/oracle/TEST/data:/data  -v /docker/oracle/TEST/oratab:/etc/oratab  -it sebcb1/oracle19:0.0.4 run.sh createDB
+docker run -v /docker/oracle/TEST/data:/data  -v /docker/oracle/TEST/oratab:/etc/oratab  -it sebcb1/oracle19:0.0.5 run.sh createDB
 ```
 
 ### Start and stop the container
@@ -72,6 +72,13 @@ curl -X GET  -H "Content-Type: application/json" http://192.168.33.30:8080/datab
 {"returncode": 1, "errormsg": "Replay not completed", "msg": "", "status": "FAILED"}
 ```
 
+Change a parameter:
+```
+curl -X PATCH -d '{"name": "db_cache_size", "value": 1000000, "scope": "spfile"}' -H "Content-Type: application/json" http://192.168.33.30:8080/database/parameter
+{"returncode": 0, "status": "FINISHED"}
+curl -X PATCH -d '{"name": "optimizer_features_enable", "value": "11.2.0.1", "scope": "spfile"}' -H "Content-Type: application/json" http://192.168.33.30:8080/database/parameter
+{"returncode": 0, "status": "FINISHED"}
+```
 
 ### Delete a database
 
@@ -222,6 +229,10 @@ Version 0.0.4 - 31/05/2020
 	- /database/metricsreplay
 - Add script to start API server with oracle env
 - Improve API erros
+
+Version 0.0.5 - 05/06/2020
+- Add api:
+	- database/parameters
 
 ## Some links
 
